@@ -1,0 +1,103 @@
+body {
+	background-image: url("main-bg.jpg");
+	font-family: Arial, Helvetica, sans-serif;
+	}
+
+h1 {
+	margin-top : 128px;
+	margin-right : 20%;
+	color : #ef4f00;
+	background-color: #FFFF99;
+	border-color : #481a00;;
+	border-style: solid;
+	border-width: 3px;
+	padding: 20px;
+	}
+
+h2 {
+	color : #ef4f00;
+	background-color: #FFFF99;
+	border : 3px #481a00;
+/* 	border-color : black; */
+/* 	border-style: solid; */
+/* 	border-width: 3px; */
+	padding: 20px;
+	}
+	
+#mainMenu {
+	width : 140px;
+	height : 150px;
+	overflow : hidden;
+	position : absolute;
+	right : 50px;
+	top : 70px;
+	background-color : #FFFF99; /* #FFD633 */
+	border-width : 3px;
+	border-style : solid;
+	border-color : #481a00;
+	text-align:center;
+	padding : 10px;
+	}
+	
+#mainMenu ul li {
+	background:url("divider.gif") no-repeat left top;
+	padding-top:4px;
+	margin-top:4px;
+	text-align:center;
+	}
+
+#mainMenu a {
+	color:#481a00;
+	text-transform : lowercase;
+	text-decoration:none;
+	font-size:20px;
+	margin:0 auto;
+	line-height:1.5em;
+	}
+	
+#mainMenu a:hover, nav ul li.current a {
+	color : #ef4f00;
+	text-transform : uppercase;
+	}
+
+header {
+	color : #481a00; 
+	top : 10px;
+	position : relative;
+	min-height : 324px;
+	height : auto!important;
+	margin-right : 20%;
+	padding : 15px;
+	}
+	
+p {
+	text-align : center;
+	}
+
+form {
+	font-size : 15px;
+	text-align : center;
+	}
+
+#displayCards {
+	width : 75%;
+	height: 200px;
+	text-align : center;
+	margin-left : auto;
+	margin-right : auto;
+	padding : 15px;
+	}
+	
+.cards {
+	font-size : 20px;
+	font-style : strong;
+	}
+	
+footer {
+	position:fixed;
+	bottom:0;
+ 	left : 5px;
+	text-align : left;
+	font-size:12px;
+	color:#fff;
+}

@@ -2,8 +2,8 @@ package com.game.application;
 
 import java.util.HashMap;
 
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +39,16 @@ public class PokerController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/setPoker", method = RequestMethod.GET)
-	public String poker() {
+	public String poker(Model model, HttpServletRequest request) {
 		logger.info("User is setting up poker game");
-		
+		HttpSession userSession = request.getSession();
+		if(userSession.getAttribute("Authen")==null || userSession.isNew()) {
+			String msg = "You must be logged in to view your profile.";
+			model.addAttribute("loginMessage", msg);
+			model.addAttribute("Authenticated", "no");
+		} else {
+			model.addAttribute("Authenticated", "yes");
+		}
 		return "setPoker";
 	}
 	

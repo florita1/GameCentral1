@@ -7,6 +7,7 @@ import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +70,10 @@ public class HomeController {
 		model.addAttribute("message", name );
 		ManageLogin ML = new ManageLogin();
 		ML.populateDB(name,pass,email);
-		
+		HttpSession userSession = request.getSession();
+		userSession.setMaxInactiveInterval(2*60);
+		userSession.setAttribute("Authen", "yes");
+		model.addAttribute("Authenticated", "yes");
 		return "registered";
 	}
 	
@@ -83,7 +87,7 @@ public class HomeController {
 	@RequestMapping(value = "/thankyou", method = RequestMethod.POST)
 	public String thankyou( HttpServletRequest request, Locale locale, Model model ) throws SQLException {
 		logger.info("User is logging in.");
-		
+		HttpSession userSession = request.getSession();
 		String name = request.getParameter("userName");
 		String pass = request.getParameter("passWord");
 		
@@ -94,7 +98,11 @@ public class HomeController {
 		if(passDB.equals(pass)) {
 			message = "Thank you for logging in "+name+".<br> "
 					+ "Please choose a game to play <a href='/application'> here</a>.";
+			userSession.setMaxInactiveInterval(2*60);
+			userSession.setAttribute("Authen", "yes");
+			model.addAttribute("Authenticated", "yes");
 		} else {
+			model.addAttribute("Authenticated", "no");
 			message = "Login failed. Please try logging in again <a href='/application/login'> here</a>.";
 		}
 		

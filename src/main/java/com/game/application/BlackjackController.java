@@ -3,6 +3,9 @@ package com.game.application;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,21 +42,28 @@ public class BlackjackController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/blackjack", method = RequestMethod.GET)
-	public String blackjack( Model model) {
+	public String blackjack( Model model, HttpServletRequest request) {
 		logger.info("User is playing war game");
-		
-		String playerName = this.user.getUserName();
-		
-		cards = new MakeHands(playerName);
-		HashMap<String,List<String>> playerCards = cards.getPlayerMap();
-		CountHands playerInfo = new CountHands(playerCards);
-		
-		String cardsStr = playerCards.get(playerName).get(0) +" "+ playerCards.get(playerName).get(1);
-		
-		model.addAttribute("playerCards" ,"Your cards: "+ cardsStr );
-		model.addAttribute("playerCount", "Card count: "+ playerInfo.countHand(playerName));
-		
-		model.addAttribute("adjustBlackjack", "true");
+		HttpSession userSession = request.getSession();
+		if(userSession.getAttribute("Authen")==null || userSession.isNew()) {
+			String msg = "You must be logged in to view your profile.";
+			model.addAttribute("loginMessage", msg);
+			model.addAttribute("Authenticated", "no");
+		} else {
+			model.addAttribute("Authenticated", "yes");
+			String playerName = this.user.getUserName();
+
+			cards = new MakeHands(playerName);
+			HashMap<String,List<String>> playerCards = cards.getPlayerMap();
+			CountHands playerInfo = new CountHands(playerCards);
+
+			String cardsStr = playerCards.get(playerName).get(0) +" "+ playerCards.get(playerName).get(1);
+
+			model.addAttribute("playerCards" ,"Your cards: "+ cardsStr );
+			model.addAttribute("playerCount", "Card count: "+ playerInfo.countHand(playerName));
+
+			model.addAttribute("adjustBlackjack", "true");
+		}
 		return "blackjack";
 	}
 	

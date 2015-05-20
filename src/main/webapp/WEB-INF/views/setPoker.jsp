@@ -19,6 +19,10 @@
 		</nav>
 	</ul>
 	<header>
+	<% if(request.getAttribute("Authenticated").equals("no")) { %>
+				<h2>Page Inaccessible</h2>
+				<p>${loginMessage}</p>
+	<%} else {%>
 	<form class="Poker" action="/application/poker" method="GET">
 
 		How many players should we deal cards for? <br> 2 Players: <input
@@ -31,6 +35,7 @@
 		<input type="submit" value="Start Game">
 
 	</form>
+	<%} %>
 	</header>
 	<footer>
 	<p class="lf">

@@ -3,6 +3,9 @@ package com.game.application;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,26 +40,34 @@ public class WarController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/war", method = RequestMethod.GET)
-	public String war(Model model) {
+	public String war(Model model, HttpServletRequest request) {
 		logger.info("User is playing war.");
-		String playerName = this.user.getUserName();
-		playerCards = new MakePlayersHands(playerName).getPlayerMap();
-		
-		String winner = new GetWinner(playerCards, playerName).getWinner();
-		
-		war.setPlayerCard(playerCards.get(playerName).get(0));
-		war.setpDeckSize(playerCards.get(playerName).size());
-		war.setDealerCard(playerCards.get("Player 2").get(0));
-		war.setdDeckSize(playerCards.get("Player 2").size());
-		war.setWinner(winner);
-		
-		model.addAttribute("playerCard", this.war.getPlayerCard());
-		model.addAttribute("dealerCard", this.war.getDealerCard());
-		model.addAttribute("playerDeck", this.war.getpDeckSize());
-		model.addAttribute("dealerDeck", this.war.getdDeckSize());
-		model.addAttribute("winner", this.war.getWinner());
-		
-		model.addAttribute("adjustWar", "true");
+		HttpSession userSession = request.getSession();
+		if(userSession.getAttribute("Authen")==null || userSession.isNew()) {
+			String msg = "You must be logged in to view your profile.";
+			model.addAttribute("loginMessage", msg);
+			model.addAttribute("Authenticated", "no");
+		} else {
+			model.addAttribute("Authenticated", "yes");
+			String playerName = this.user.getUserName();
+			playerCards = new MakePlayersHands(playerName).getPlayerMap();
+
+			String winner = new GetWinner(playerCards, playerName).getWinner();
+
+			war.setPlayerCard(playerCards.get(playerName).get(0));
+			war.setpDeckSize(playerCards.get(playerName).size());
+			war.setDealerCard(playerCards.get("Player 2").get(0));
+			war.setdDeckSize(playerCards.get("Player 2").size());
+			war.setWinner(winner);
+
+			model.addAttribute("playerCard", this.war.getPlayerCard());
+			model.addAttribute("dealerCard", this.war.getDealerCard());
+			model.addAttribute("playerDeck", this.war.getpDeckSize());
+			model.addAttribute("dealerDeck", this.war.getdDeckSize());
+			model.addAttribute("winner", this.war.getWinner());
+
+			model.addAttribute("adjustWar", "true");
+		}
 		return "war";
 	}
 	

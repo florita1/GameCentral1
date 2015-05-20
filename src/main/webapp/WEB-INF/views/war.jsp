@@ -12,21 +12,23 @@
 	<h1>War Game</h1>
 	<ul id="mainMenu">
 		<nav>
-			<li><a href="/application"> Home </a></li>
-			<li><a href="/application/setPoker"> Poker </a></li>
-			<li><a href="/application/blackjack"> BlackJack </a></li>
-			<li><a href="/application/war"> War </a></li>
-			<li><a id="login" href="/application/login"> Login </a></li>
+		<li><a href="/application"> Home </a></li>
+		<li><a href="/application/setPoker"> Poker </a></li>
+		<li><a href="/application/blackjack"> BlackJack </a></li>
+		<li><a href="/application/war"> War </a></li>
+		<li><a id="login" href="/application/login"> Login </a></li>
 		</nav>
 	</ul>
-	<header>
-	<form
-<% if(request.getAttribute("adjustWar").equals("true")) { %>
-	class="War" action="/application/war" method="POST"
-<% } else { %>
-	class="War" action="/application/war" method="GET"
-<% } %>
-	>
+	<header> 
+	<% if(request.getAttribute("Authenticated").equals("no")) { %>
+		<h2>Page Inaccessible</h2>
+		<p>${loginMessage}</p>
+	<%} else {%>
+	<form <% if(request.getAttribute("adjustWar").equals("true")) { %>
+			class="War" action="/application/war" method="POST" 
+		<% } else { %>
+			class="War" action="/application/war" method="GET" 
+		<% } %>>
 		<table id="displayCards">
 			<TR>
 				<TD>Your cards:</TD>
@@ -41,12 +43,13 @@
 			</TR>
 		</table>
 		<h3>${war}</h3>
-		<h3>${winner} wins!</h3>
+		<h3>${winner}wins!</h3>
 		<input type="submit" value="Deal Card">
 	</form>
 	<form action="/application" method="GET">
 		<input type="submit" id="exit" value="Quit Game"> <br>
 	</form>
+	<%} %> 
 	</header>
 	<footer>
 	<p class="lf">
